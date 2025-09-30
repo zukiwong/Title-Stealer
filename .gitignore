@@ -32,4 +32,4 @@ web-ext-artifacts/
 *.zip
 
 # docs private
-. docs/
+docs/

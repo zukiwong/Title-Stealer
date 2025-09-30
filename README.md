@@ -19,13 +19,29 @@ All data is stored locally in your browser. Nothing is uploaded to any server.
 - **Search & Filter** - Search across titles and URLs
 - **Delete Unwanted Items** - Hover over any title card to delete it
 - **Click to Revisit** - Click any title card to reopen that webpage
+- **Word Cloud Visualization** - Generate beautiful word clouds from your collected titles
+  - Automatic keyword extraction from titles
+  - Customizable shapes (circle, heart, star, cloud, etc.)
+  - Size reflects frequency of keywords
+  - Interactive and exportable
 - **Privacy-First** - All data stored locally, nothing sent to servers
+
+### What Makes Title Stealer Different from Button Stealer
+
+While Button Stealer collects visual elements, Title Stealer collects text data, enabling unique text-based features:
+
+- **Semantic Analysis** - Extract meaningful keywords and topics from titles
+- **Word Cloud** - Visualize your browsing interests at a glance
+- **Trending Topics** - See what you've been reading about most
+- **Smart Search** - Full-text search through your browsing history
+- **Statistics** - Understand your browsing patterns with data
 
 ### Planned Features
 
-- Keyword extraction and tagging
+- Hot topics ranking (most visited keywords)
+- Time-based statistics dashboard
+- Category clustering (tech, news, shopping, etc.)
 - Export functionality (JSON/CSV/PDF)
-- Statistics and visualizations (Chart.js)
 - Whitelist/blacklist for specific websites
 - Data backup and sync options
 
