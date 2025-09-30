@@ -1,0 +1,39 @@
+{
+  "name": "title-stealer",
+  "version": "1.0.0",
+  "description": "A Chrome extension that automatically collects and organizes webpage titles",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build && npm run copy-files",
+    "copy-files": "cp public/manifest.json dist/ && cp public/*.png dist/",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zukiwong/Title-Stealer.git"
+  },
+  "keywords": ["chrome-extension", "browser-extension", "title-stealer", "webpage-titles"],
+  "author": "zukiwong",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zukiwong/Title-Stealer/issues"
+  },
+  "homepage": "https://github.com/zukiwong/Title-Stealer#readme",
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.13",
+    "@types/chrome": "^0.1.14",
+    "@types/react": "^19.1.16",
+    "@types/react-dom": "^19.1.9",
+    "@vitejs/plugin-react": "^5.0.4",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.7"
+  },
+  "dependencies": {
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  }
+}
