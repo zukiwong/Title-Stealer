@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { getAllRecords, getIgnoredKeywords, getBackgroundImage } from '../utils/storage';
+import { getAllRecords, getIgnoredKeywords, getBackgroundImage, getTextMaskImage } from '../utils/storage';
 import { extractKeywords, getTitlesByDateRange, WordFrequency } from '../utils/keywords';
 import { FloatingWord } from '../components/FloatingWord';
 import { BlurredOverlay } from '../components/BlurredOverlay';
@@ -14,6 +14,7 @@ export const Statistics = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [ignoredKeywords, setIgnoredKeywords] = useState<string[]>([]);
   const [backgroundImage, setBackgroundImage] = useState<string | null>(null);
+  const [textMaskImage, setTextMaskImage] = useState<string | null>(null);
 
   useEffect(() => {
     loadData();
@@ -38,9 +39,11 @@ export const Statistics = () => {
       const allRecords = await getAllRecords();
       const keywords = await getIgnoredKeywords();
       const bgImage = await getBackgroundImage();
+      const maskImage = await getTextMaskImage();
       setRecords(allRecords);
       setIgnoredKeywords(keywords);
       setBackgroundImage(bgImage);
+      setTextMaskImage(maskImage);
     } catch (error) {
       // Silent error
     } finally {
@@ -90,9 +93,11 @@ export const Statistics = () => {
   const minValue = keywords.length > 0 ? Math.min(...keywords.map(w => w.value)) : 1;
   const topWord = keywords.length > 0 ? keywords[0].text.toUpperCase() : 'BROWSE';
 
-  // 默认背景图
+  // 默认图片
   const defaultBackgroundImage = "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920&q=80";
+  const defaultTextMaskImage = "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80";
   const displayBackgroundImage = backgroundImage || defaultBackgroundImage;
+  const displayTextMaskImage = textMaskImage || defaultTextMaskImage;
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-black">
@@ -120,10 +125,7 @@ export const Statistics = () => {
               fontFamily: 'Poppins, sans-serif',
               WebkitBackgroundClip: 'text',
               backgroundClip: 'text',
-              backgroundImage: "url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80')",
-              // 黑白版本
-              // filter: 'grayscale(1) contrast(1.25) brightness(1.1)',
-              // 彩色版本
+              backgroundImage: `url('${displayTextMaskImage}')`,
               filter: 'contrast(1.25) brightness(1.1)',
             }}
           >

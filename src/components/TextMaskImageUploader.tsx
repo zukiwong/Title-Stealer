@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
-interface ImageUploaderProps {
+interface TextMaskImageUploaderProps {
   onImageChange: (base64Image: string | null) => void;
   currentImage?: string | null;
 }
 
-export const ImageUploader = ({ onImageChange, currentImage }: ImageUploaderProps) => {
+export const TextMaskImageUploader = ({ onImageChange, currentImage }: TextMaskImageUploaderProps) => {
   const [preview, setPreview] = useState<string | null>(currentImage || null);
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -102,15 +102,15 @@ export const ImageUploader = ({ onImageChange, currentImage }: ImageUploaderProp
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: 0.25 }}
+      transition={{ duration: 0.6, delay: 0.27 }}
       className="space-y-4 mb-8"
     >
       <div>
         <p className="text-white text-sm font-medium" style={{ fontFamily: 'Poppins, sans-serif' }}>
-          Background Image
+          Text Mask Image
         </p>
         <p className="text-sm text-white/60 mt-1" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: '300' }}>
-          Customize the word cloud background (Recommended: 1920×1080 or 16:9)
+          Image fill for the center text (Recommended: 1920×1080 or 16:9)
         </p>
       </div>
 
@@ -119,7 +119,7 @@ export const ImageUploader = ({ onImageChange, currentImage }: ImageUploaderProp
         <div className="relative w-full h-32 rounded-lg overflow-hidden border border-white/20">
           <img
             src={preview}
-            alt="Background preview"
+            alt="Text mask preview"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-black/40 flex items-center justify-center">

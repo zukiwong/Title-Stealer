@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Menu, ArrowLeft } from 'lucide-react';
-import { getAllRecords, getIgnoredKeywords, saveIgnoredKeywords, clearAllRecords, getBackgroundImage, saveBackgroundImage } from '../utils/storage';
+import { getAllRecords, getIgnoredKeywords, saveIgnoredKeywords, clearAllRecords, getBackgroundImage, saveBackgroundImage, getTextMaskImage, saveTextMaskImage } from '../utils/storage';
 import { ImageUploader } from '../components/ImageUploader';
+import { TextMaskImageUploader } from '../components/TextMaskImageUploader';
+import { StaticPreview } from '../components/StaticPreview';
 
 const popupWords = [
   'STEAL', 'COLLECT', 'CAPTURE', 'HARVEST', 'GATHER', 'SAVE', 'STORE',
@@ -220,11 +222,13 @@ function SettingsPage() {
   const [ignoredKeywords, setIgnoredKeywords] = useState<string[]>([]);
   const [newKeyword, setNewKeyword] = useState('');
   const [backgroundImage, setBackgroundImage] = useState<string | null>(null);
+  const [textMaskImage, setTextMaskImage] = useState<string | null>(null);
 
-  // 加载屏蔽词列表和背景图
+  // 加载屏蔽词列表和图片
   useEffect(() => {
     loadIgnoredKeywords();
     loadBackgroundImage();
+    loadTextMaskImage();
   }, []);
 
   const loadIgnoredKeywords = async () => {
@@ -235,6 +239,11 @@ function SettingsPage() {
   const loadBackgroundImage = async () => {
     const image = await getBackgroundImage();
     setBackgroundImage(image);
+  };
+
+  const loadTextMaskImage = async () => {
+    const image = await getTextMaskImage();
+    setTextMaskImage(image);
   };
 
   const handleAddKeyword = async () => {
@@ -265,6 +274,11 @@ function SettingsPage() {
     await saveBackgroundImage(base64Image);
   };
 
+  const handleMaskImageChange = async (base64Image: string | null) => {
+    setTextMaskImage(base64Image);
+    await saveTextMaskImage(base64Image);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}
@@ -292,6 +306,28 @@ function SettingsPage() {
         onImageChange={handleImageChange}
         currentImage={backgroundImage}
       />
+
+      {/* 文字遮罩图上传 */}
+      <TextMaskImageUploader
+        onImageChange={handleMaskImageChange}
+        currentImage={textMaskImage}
+      />
+
+      {/* 静态预览 */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.29 }}
+        className="mb-8"
+      >
+        <p className="text-white text-sm font-medium mb-3" style={{ fontFamily: 'Poppins, sans-serif' }}>
+          Combined Preview
+        </p>
+        <StaticPreview
+          backgroundImage={backgroundImage}
+          maskImage={textMaskImage}
+        />
+      </motion.div>
 
       {/* 忽略关键词 */}
       <motion.div

@@ -93,3 +93,21 @@ export const saveBackgroundImage = async (base64Image: string | null): Promise<v
     await chrome.storage.local.remove(BACKGROUND_IMAGE_KEY);
   }
 };
+
+// 文字遮罩图相关
+const TEXT_MASK_IMAGE_KEY = 'text_mask_image';
+
+// 获取文字遮罩图
+export const getTextMaskImage = async (): Promise<string | null> => {
+  const data = await chrome.storage.local.get([TEXT_MASK_IMAGE_KEY]);
+  return data[TEXT_MASK_IMAGE_KEY] || null;
+};
+
+// 保存文字遮罩图
+export const saveTextMaskImage = async (base64Image: string | null): Promise<void> => {
+  if (base64Image) {
+    await chrome.storage.local.set({ [TEXT_MASK_IMAGE_KEY]: base64Image });
+  } else {
+    await chrome.storage.local.remove(TEXT_MASK_IMAGE_KEY);
+  }
+};
