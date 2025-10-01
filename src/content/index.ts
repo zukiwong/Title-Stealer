@@ -1,7 +1,14 @@
 // Content Script - 在每个网页中运行，收集标题信息
 import { PageRecord } from '../types';
 import { addRecord } from '../utils/storage';
-import { getCurrentTime } from '../utils/date';
+
+// 获取当前时间
+function getCurrentTime(): string {
+  return new Date().toLocaleTimeString('zh-CN', {
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+}
 
 (async function collectPageInfo() {
   const title = document.title;

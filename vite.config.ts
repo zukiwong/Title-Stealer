@@ -12,7 +12,6 @@ export default defineConfig({
     rollupOptions: {
       input: {
         popup: resolve(__dirname, 'popup.html'),
-        'stolen-titles': resolve(__dirname, 'stolen-titles.html'),
         statistics: resolve(__dirname, 'statistics.html'),
       },
       output: {
