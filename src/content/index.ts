@@ -10,16 +10,16 @@ function getCurrentTime(): string {
   });
 }
 
-// 智能简化标题 - 针对常见网站
-function simplifyTitle(title: string, url: string): string {
+// 从域名提取网站名
+function extractSiteName(url: string): string {
   const hostname = new URL(url).hostname.toLowerCase();
 
-  // 常见网站映射
+  // 常见网站映射 - 优先匹配
   const siteMap: { [key: string]: string } = {
     'github.com': 'GitHub',
     'stackoverflow.com': 'Stack Overflow',
     'twitter.com': 'Twitter',
-    'x.com': 'X (Twitter)',
+    'x.com': 'X',
     'youtube.com': 'YouTube',
     'reddit.com': 'Reddit',
     'linkedin.com': 'LinkedIn',
@@ -30,6 +30,7 @@ function simplifyTitle(title: string, url: string): string {
     'amazon.com': 'Amazon',
     'wikipedia.org': 'Wikipedia',
     'openai.com': 'OpenAI',
+    'chatgpt.com': 'ChatGPT',
     'google.com': 'Google',
     'docs.google.com': 'Google Docs',
     'drive.google.com': 'Google Drive',
@@ -52,70 +53,54 @@ function simplifyTitle(title: string, url: string): string {
     'bitbucket.org': 'Bitbucket',
     'npmjs.com': 'npm',
     'producthunt.com': 'Product Hunt',
-    'hackernews.ycombinator.com': 'Hacker News',
+    'dribbble.com': 'Dribbble',
+    'behance.net': 'Behance',
     'news.ycombinator.com': 'Hacker News',
+    'trademe.co.nz': 'Trade Me',
+    'airbnb.com': 'Airbnb',
+    'booking.com': 'Booking',
+    'ebay.com': 'eBay',
+    'etsy.com': 'Etsy',
   };
 
-  // 检查是否是常见网站
+  // 检查是否在映射表中
   for (const [domain, siteName] of Object.entries(siteMap)) {
     if (hostname === domain || hostname.endsWith('.' + domain)) {
       return siteName;
     }
   }
 
-  // ChatGPT 特殊处理
-  if (hostname.includes('chatgpt.com') || hostname.includes('chat.openai.com')) {
-    return 'ChatGPT';
-  }
+  // 通用域名提取：去掉 www. 和顶级域名，格式化主域名
+  // 例如：www.trademe.co.nz -> trademe -> Trademe
+  const parts = hostname.replace(/^www\./, '').split('.');
+  if (parts.length > 0) {
+    const mainDomain = parts[0];
 
-  // Dribbble 特殊处理
-  if (hostname.includes('dribbble.com')) {
-    return 'Dribbble';
-  }
+    // 特殊处理：如果是常见的驼峰命名或连字符，进行分割
+    let formatted = mainDomain
+      // 处理驼峰：userName -> User Name
+      .replace(/([a-z])([A-Z])/g, '$1 $2')
+      // 处理连字符和下划线：user-name -> User Name
+      .replace(/[-_]/g, ' ')
+      // 首字母大写
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
 
-  // 通用标题清理：去除常见的分隔符后的网站名/Slogan
-  // 格式：标题 - 网站名, 标题 | 网站名, 标题 · 网站名
-  const separators = [' - ', ' | ', ' · ', ' – ', ' — ', ' :: '];
-  for (const sep of separators) {
-    if (title.includes(sep)) {
-      const parts = title.split(sep);
-      // 如果第一部分不是太短，就用第一部分
-      if (parts[0].trim().length > 3) {
-        return parts[0].trim();
-      }
+    // 如果格式化后合理（不是纯数字，长度合适），返回
+    if (formatted.length > 1 && !/^\d+$/.test(formatted)) {
+      return formatted;
     }
   }
 
-  // 如果标题太长（超过 60 字符），尝试从域名提取网站名
-  if (title.length > 60) {
-    // 从域名提取：trademe.co.nz -> Trade Me
-    const domainParts = hostname.replace(/^www\./, '').split('.');
-    if (domainParts.length > 0) {
-      const siteName = domainParts[0];
-      // 将域名转换为标题格式：trademe -> Trade Me
-      const formatted = siteName
-        .split(/(?=[A-Z])/) // 按大写字母分割（如 trademe 不分割，但 tradMe 会分割）
-        .join(' ')
-        .replace(/\b\w/g, c => c.toUpperCase()); // 首字母大写
-
-      // 如果格式化后看起来合理（不是纯数字或太短），就使用它
-      if (formatted.length > 2 && !/^\d+$/.test(formatted)) {
-        return formatted;
-      }
-    }
-
-    // 否则截断标题
-    return title.substring(0, 60) + '...';
-  }
-
-  return title;
+  // 兜底：返回主域名（首字母大写）
+  return hostname.split('.')[0].charAt(0).toUpperCase() + hostname.split('.')[0].slice(1);
 }
 
 (async function collectPageInfo() {
-  const rawTitle = document.title;
   const url = window.location.href;
   const time = getCurrentTime();
-  const title = simplifyTitle(rawTitle, url);
+  const title = extractSiteName(url);
 
   // 获取网站 favicon
   const favicon =
