@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Menu, ArrowLeft } from 'lucide-react';
-import { getAllRecords, getIgnoredKeywords, saveIgnoredKeywords, clearAllRecords, getBackgroundImage, saveBackgroundImage, getTextMaskImage, saveTextMaskImage } from '../utils/storage';
+import { getIgnoredKeywords, saveIgnoredKeywords, clearAllRecords, getBackgroundImage, saveBackgroundImage, getTextMaskImage, saveTextMaskImage } from '../utils/storage';
 import { ImageUploader } from '../components/ImageUploader';
 import { TextMaskImageUploader } from '../components/TextMaskImageUploader';
 import { StaticPreview } from '../components/StaticPreview';
@@ -55,17 +55,6 @@ function FloatingWordSmall({ text, delay, position }: any) {
 
 export const Popup = () => {
   const [currentPage, setCurrentPage] = useState<'main' | 'settings'>('main');
-  const [wordCount, setWordCount] = useState(0);
-
-  useEffect(() => {
-    loadStats();
-  }, []);
-
-  const loadStats = async () => {
-    const records = await getAllRecords();
-    const count = Object.values(records).reduce((sum, arr) => sum + arr.length, 0);
-    setWordCount(count);
-  };
 
   const handleViewCollection = () => {
     chrome.tabs.create({ url: chrome.runtime.getURL('statistics.html') });
@@ -100,7 +89,7 @@ export const Popup = () => {
 
       {/* 主内容 */}
       {currentPage === 'main' ? (
-        <MainPage wordCount={wordCount} onViewCollection={handleViewCollection} />
+        <MainPage onViewCollection={handleViewCollection} />
       ) : (
         <SettingsPage />
       )}
@@ -111,42 +100,43 @@ export const Popup = () => {
   );
 };
 
-function MainPage({ wordCount, onViewCollection }: { wordCount: number; onViewCollection: () => void }) {
+function MainPage({ onViewCollection }: { onViewCollection: () => void }) {
   return (
-    <div className="relative z-10 px-6 py-4 flex flex-col h-full">
-      {/* 标题 */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-        className="mb-6"
-      >
-        <h1
-          className="text-5xl font-bold leading-none tracking-tight text-white drop-shadow-lg"
-          style={{
-            textShadow: '2px 2px 8px rgba(0, 0, 0, 0.8)',
-            fontFamily: 'Poppins, sans-serif',
-          }}
+    <div className="relative z-10 px-6 pb-6 flex flex-col" style={{ height: 'calc(600px - 64px)' }}>
+      <div>
+        {/* 标题 */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="mb-4"
         >
-          TITLE
-          <br />
-          STEALER
-        </h1>
-      </motion.div>
+          <h1
+            className="text-5xl font-bold leading-none tracking-tight text-white drop-shadow-lg"
+            style={{
+              textShadow: '2px 2px 8px rgba(0, 0, 0, 0.8)',
+              fontFamily: 'Poppins, sans-serif',
+            }}
+          >
+            TITLE
+            <br />
+            STEALER
+          </h1>
+        </motion.div>
 
-      {/* 副标题 */}
-      <motion.div
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8, delay: 0.4 }}
-        className="mb-8"
-      >
-        <p className="text-sm leading-relaxed text-white/80 tracking-wide" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: '300' }}>
-          COLLECT WORDS AS YOU BROWSE
-          <br />
-          WATCH THEM GROW INTO ART
-        </p>
-      </motion.div>
+        {/* 副标题 */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+        >
+          <p className="text-sm leading-relaxed text-white/80 tracking-wide" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: '300' }}>
+            COLLECT WORDS AS YOU BROWSE
+            <br />
+            WATCH THEM GROW INTO ART
+          </p>
+        </motion.div>
+      </div>
 
       {/* 浮动词 */}
       {popupWords.map((word, index) => (
@@ -184,36 +174,43 @@ function MainPage({ wordCount, onViewCollection }: { wordCount: number; onViewCo
         }}
       />
 
-      {/* 主按钮 */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.8 }}
-        className="mt-auto mb-8"
-      >
-        <button
-          onClick={onViewCollection}
-          className="w-full py-6 bg-white hover:bg-white/90 text-black rounded-full text-lg tracking-wider font-medium transition-all"
-          style={{
-            boxShadow: '0 8px 32px rgba(255, 255, 255, 0.2)',
-            fontFamily: 'Poppins, sans-serif',
-          }}
+      {/* 底部按钮和链接 */}
+      <div className="mt-auto mb-10 space-y-2">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.8 }}
         >
-          VIEW STOLEN TITLES
-        </button>
-      </motion.div>
+          <button
+            onClick={onViewCollection}
+            className="w-full py-6 bg-white hover:bg-white/90 text-black rounded-full text-lg tracking-wider font-medium transition-all"
+            style={{
+              boxShadow: '0 8px 32px rgba(255, 255, 255, 0.2)',
+              fontFamily: 'Poppins, sans-serif',
+            }}
+          >
+            VIEW STOLEN TITLES
+          </button>
+        </motion.div>
 
-      {/* 底部统计 */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 1 }}
-        className="flex justify-between items-center text-white/70 mt-auto pb-4"
-      >
-        <span className="text-sm tracking-wide" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: '300' }}>
-          {wordCount} words captured
-        </span>
-      </motion.div>
+        {/* Buy Me a Coffee 链接 */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.1 }}
+          className="text-center py-2"
+        >
+          <a
+            href="https://buymeacoffee.com/zukiwong"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-white/40 hover:text-white/60 text-xs transition-colors"
+            style={{ fontFamily: 'Poppins, sans-serif', fontWeight: '300' }}
+          >
+            buymeacoffee
+          </a>
+        </motion.div>
+      </div>
     </div>
   );
 }
