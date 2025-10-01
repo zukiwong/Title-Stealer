@@ -25,7 +25,7 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["stolen-titles.html"],
+      "resources": ["stolen-titles.html", "statistics.html"],
       "matches": ["<all_urls>"]
     }
   ]

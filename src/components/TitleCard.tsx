@@ -11,23 +11,23 @@ export const TitleCard = ({ record, onDelete }: TitleCardProps) => {
   };
 
   return (
-    <div className="group relative bg-white border border-gray-200 rounded-lg p-4 hover:shadow-lg transition-all duration-200 cursor-pointer">
-      <div onClick={handleClick} className="flex items-start gap-3">
+    <div className="group relative border-b border-gray-200 hover:bg-gray-50 transition-colors">
+      <div onClick={handleClick} className="flex items-start gap-3 p-3 cursor-pointer">
         {record.favicon && (
           <img
             src={record.favicon}
             alt=""
-            className="w-5 h-5 mt-1 flex-shrink-0"
+            className="w-4 h-4 mt-0.5 flex-shrink-0 object-contain opacity-60"
             onError={(e) => {
               (e.target as HTMLImageElement).style.display = 'none';
             }}
           />
         )}
         <div className="flex-1 min-w-0">
-          <h3 className="font-medium text-gray-900 truncate mb-1">
+          <h3 className="text-sm text-gray-900 truncate">
             {record.title || 'Untitled'}
           </h3>
-          <p className="text-xs text-gray-500 truncate">{record.url}</p>
+          <p className="text-xs text-gray-500 truncate mt-1">{record.url}</p>
           <p className="text-xs text-gray-400 mt-1">{record.time}</p>
         </div>
       </div>
@@ -38,22 +38,10 @@ export const TitleCard = ({ record, onDelete }: TitleCardProps) => {
             e.stopPropagation();
             onDelete();
           }}
-          className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity bg-red-50 hover:bg-red-100 text-red-600 rounded p-1"
+          className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 text-gray-400 hover:text-red-600 transition-opacity"
           title="Delete"
         >
-          <svg
-            className="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
+          <span className="text-xs">×</span>
         </button>
       )}
     </div>
