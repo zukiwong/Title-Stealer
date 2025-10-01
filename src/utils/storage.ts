@@ -56,3 +56,22 @@ export const getAllDates = async (): Promise<string[]> => {
   const allRecords = await getAllRecords();
   return Object.keys(allRecords).sort().reverse();
 };
+
+// 屏蔽词相关
+const IGNORED_KEYWORDS_KEY = 'ignored_keywords';
+
+// 获取屏蔽词列表
+export const getIgnoredKeywords = async (): Promise<string[]> => {
+  const data = await chrome.storage.local.get([IGNORED_KEYWORDS_KEY]);
+  return data[IGNORED_KEYWORDS_KEY] || [];
+};
+
+// 保存屏蔽词列表
+export const saveIgnoredKeywords = async (keywords: string[]): Promise<void> => {
+  await chrome.storage.local.set({ [IGNORED_KEYWORDS_KEY]: keywords });
+};
+
+// 清空所有记录
+export const clearAllRecords = async (): Promise<void> => {
+  await chrome.storage.local.set({ [STORAGE_KEY]: {} });
+};

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Menu, ArrowLeft } from 'lucide-react';
-import { getAllRecords } from '../utils/storage';
+import { getAllRecords, getIgnoredKeywords, saveIgnoredKeywords, clearAllRecords } from '../utils/storage';
 
 const popupWords = [
   'STEAL', 'COLLECT', 'CAPTURE', 'HARVEST', 'GATHER', 'SAVE', 'STORE',
@@ -125,7 +125,7 @@ function MainPage({ wordCount, onViewCollection }: { wordCount: number; onViewCo
             fontFamily: 'Poppins, sans-serif',
           }}
         >
-          WORD
+          TITLE
           <br />
           STEALER
         </h1>
@@ -196,7 +196,7 @@ function MainPage({ wordCount, onViewCollection }: { wordCount: number; onViewCo
             fontFamily: 'Poppins, sans-serif',
           }}
         >
-          YOUR COLLECTION
+          VIEW STOLEN TITLES
         </button>
       </motion.div>
 
@@ -216,18 +216,40 @@ function MainPage({ wordCount, onViewCollection }: { wordCount: number; onViewCo
 }
 
 function SettingsPage({ wordCount }: { wordCount: number }) {
-  const [ignoredKeywords, setIgnoredKeywords] = useState<string[]>(['the', 'and', 'or', 'but', 'in', 'on', 'at', 'to']);
+  const [ignoredKeywords, setIgnoredKeywords] = useState<string[]>([]);
   const [newKeyword, setNewKeyword] = useState('');
 
-  const handleAddKeyword = () => {
-    if (newKeyword.trim() && !ignoredKeywords.includes(newKeyword.trim().toLowerCase())) {
-      setIgnoredKeywords([...ignoredKeywords, newKeyword.trim().toLowerCase()]);
+  // 加载屏蔽词列表
+  useEffect(() => {
+    loadIgnoredKeywords();
+  }, []);
+
+  const loadIgnoredKeywords = async () => {
+    const keywords = await getIgnoredKeywords();
+    setIgnoredKeywords(keywords);
+  };
+
+  const handleAddKeyword = async () => {
+    const keyword = newKeyword.trim().toLowerCase();
+    if (keyword && !ignoredKeywords.includes(keyword)) {
+      const newList = [...ignoredKeywords, keyword];
+      setIgnoredKeywords(newList);
+      await saveIgnoredKeywords(newList);
       setNewKeyword('');
     }
   };
 
-  const handleRemoveKeyword = (keyword: string) => {
-    setIgnoredKeywords(ignoredKeywords.filter(k => k !== keyword));
+  const handleRemoveKeyword = async (keyword: string) => {
+    const newList = ignoredKeywords.filter(k => k !== keyword);
+    setIgnoredKeywords(newList);
+    await saveIgnoredKeywords(newList);
+  };
+
+  const handleClearAllWords = async () => {
+    if (confirm('Are you sure you want to remove all collected words? This action cannot be undone.')) {
+      await clearAllRecords();
+      window.location.reload();
+    }
   };
 
   return (
@@ -314,6 +336,7 @@ function SettingsPage({ wordCount }: { wordCount: number }) {
         transition={{ duration: 0.6, delay: 0.3 }}
       >
         <button
+          onClick={handleClearAllWords}
           className="w-full py-3 bg-red-600/20 hover:bg-red-600/30 text-red-300 border border-red-600/30 rounded-md text-sm"
           style={{ fontFamily: 'Poppins, sans-serif' }}
         >

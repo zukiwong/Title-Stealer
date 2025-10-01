@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { getAllRecords } from '../utils/storage';
+import { getAllRecords, getIgnoredKeywords } from '../utils/storage';
 import { extractKeywords, getTitlesByDateRange, WordFrequency } from '../utils/keywords';
 import { FloatingWord } from '../components/FloatingWord';
 import { BlurredOverlay } from '../components/BlurredOverlay';
@@ -12,6 +12,7 @@ export const Statistics = () => {
   const [loading, setLoading] = useState(true);
   const [timeRange, setTimeRange] = useState<'today' | 'week' | 'month' | 'all'>('all');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [ignoredKeywords, setIgnoredKeywords] = useState<string[]>([]);
 
   useEffect(() => {
     loadData();
@@ -21,7 +22,7 @@ export const Statistics = () => {
     if (Object.keys(records).length > 0) {
       updateKeywords();
     }
-  }, [records, timeRange]);
+  }, [records, timeRange, ignoredKeywords]);
 
   useEffect(() => {
     const handleClickOutside = () => setIsDropdownOpen(false);
@@ -34,9 +35,11 @@ export const Statistics = () => {
   const loadData = async () => {
     try {
       const allRecords = await getAllRecords();
+      const keywords = await getIgnoredKeywords();
       setRecords(allRecords);
+      setIgnoredKeywords(keywords);
     } catch (error) {
-      console.error('Failed to load records:', error);
+      // Silent error
     } finally {
       setLoading(false);
     }
@@ -68,7 +71,7 @@ export const Statistics = () => {
     }
 
     const titles = getTitlesByDateRange(records, startDate);
-    const words = extractKeywords(titles);
+    const words = extractKeywords(titles, ignoredKeywords);
     setKeywords(words);
   };
 
@@ -105,7 +108,7 @@ export const Statistics = () => {
           className="relative"
         >
           <h1
-            className="text-[12rem] font-bold leading-none tracking-tight text-transparent bg-clip-text bg-center bg-cover"
+            className="text-6xl sm:text-8xl md:text-9xl lg:text-[10rem] xl:text-[12rem] font-bold leading-none tracking-tight text-transparent bg-clip-text bg-center bg-cover px-4"
             style={{
               fontFamily: 'Poppins, sans-serif',
               WebkitBackgroundClip: 'text',
@@ -122,7 +125,7 @@ export const Statistics = () => {
 
           {/* 文字背后的模糊效果 */}
           <div
-            className="absolute inset-0 text-[12rem] font-bold leading-none tracking-tight text-white/20 backdrop-blur-sm -z-10"
+            className="absolute inset-0 text-6xl sm:text-8xl md:text-9xl lg:text-[10rem] xl:text-[12rem] font-bold leading-none tracking-tight text-white/20 backdrop-blur-sm -z-10 px-4"
             style={{ fontFamily: 'Poppins, sans-serif' }}
           >
             {topWord}
@@ -133,9 +136,9 @@ export const Statistics = () => {
       {/* 标题 - 左上角 */}
       <div className="absolute top-8 left-8 z-10">
         <h1 className="text-xl font-semibold text-white mb-1" style={{ fontFamily: 'Poppins, sans-serif' }}>
-          Word Cloud
+          Title Stealer
         </h1>
-        <p className="text-xs text-gray-400">Your browsing interests</p>
+        <p className="text-xs text-gray-400">Titles stolen from your browsing</p>
       </div>
 
       {/* 时间筛选 - 右上角 */}

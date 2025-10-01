@@ -1,90 +1,43 @@
 # Title Stealer
 
-A Chrome extension that automatically collects and organizes webpage titles from your browsing history.
+A minimalist Chrome extension that transforms your browsing history into beautiful word clouds.
 
 ## Overview
 
-Title Stealer is inspired by [Button Stealer](https://chromewebstore.google.com/detail/button-stealer/iiikidmnimlpahbeknmkeonmemajpccj) - instead of collecting buttons, it collects webpage titles. The extension automatically captures the title, URL, timestamp, and favicon of every page you visit, organizing them in a beautiful, searchable interface.
+Title Stealer automatically collects webpage titles as you browse, extracting keywords to create stunning immersive visualizations. Inspired by [Button Stealer](https://chromewebstore.google.com/detail/button-stealer/iiikidmnimlpahbeknmkeonmemajpccj), but focused on text and visual artistry.
 
 All data is stored locally in your browser. Nothing is uploaded to any server.
 
 ## Features
 
-### Current Features
-
-- **Automatic Collection** - Captures page title, URL, time, and favicon from every website you visit
-- **Daily Organization** - Automatically groups collected titles by date
-- **Quick Access Popup** - Click the extension icon to see today's collected titles
-- **Full Collection View** - Dedicated page showing all your collected titles with rich UI
-- **Search & Filter** - Search across titles and URLs
-- **Delete Unwanted Items** - Hover over any title card to delete it
-- **Click to Revisit** - Click any title card to reopen that webpage
-- **Word Cloud Visualization** - Generate beautiful word clouds from your collected titles
-  - Automatic keyword extraction from titles
-  - Customizable shapes (circle, heart, star, cloud, etc.)
-  - Size reflects frequency of keywords
-  - Interactive and exportable
+- **Automatic Collection** - Captures page titles, URLs, and timestamps from every website you visit
+- **Immersive Word Cloud** - Full-screen black background with floating white words
+  - Keywords sized by frequency
+  - Smooth floating animations
+  - Background image with artistic text fill
+  - Time-based filtering (today, week, month, all time)
+- **Beautiful Popup** - Dark themed with floating word effects
+  - Quick access to your collection
+  - Settings page for keyword management
+  - Word count statistics
+- **Keyword Extraction** - Intelligent keyword extraction supporting both English and Chinese
+  - Automatic stopword filtering
+  - Frequency analysis
+  - Customizable ignored keywords
 - **Privacy-First** - All data stored locally, nothing sent to servers
 
-### What Makes Title Stealer Different from Button Stealer
+## Design Philosophy
 
-While Button Stealer collects visual elements, Title Stealer collects text data, enabling unique text-based features:
-
-- **Semantic Analysis** - Extract meaningful keywords and topics from titles
-- **Word Cloud** - Visualize your browsing interests at a glance
-- **Trending Topics** - See what you've been reading about most
-- **Smart Search** - Full-text search through your browsing history
-- **Statistics** - Understand your browsing patterns with data
-
-### Planned Features
-
-- Hot topics ranking (most visited keywords)
-- Time-based statistics dashboard
-- Category clustering (tech, news, shopping, etc.)
-- Export functionality (JSON/CSV/PDF)
-- Whitelist/blacklist for specific websites
-- Data backup and sync options
-
-## Technology Stack
-
-- **Build Tool**: Vite
-- **Language**: TypeScript (strict mode)
-- **UI Framework**: React 19
-- **Styling**: TailwindCSS v4
-- **Extension API**: Chrome Manifest V3
-
-## Project Structure
-
-```
-src/
-├── types/              Type definitions
-├── utils/              Utility functions (storage, date)
-├── components/         Reusable React components
-├── pages/              Page-level components (Popup, StolenTitles)
-├── content/            Content script (runs on every webpage)
-└── background/         Background service worker
-
-public/
-├── manifest.json       Extension configuration
-└── icon*.png          Extension icons
-```
+- **Minimalist** - Clean, distraction-free interface
+- **Immersive** - Full-screen experiences
+- **Artistic** - Transform browsing data into visual art
+- **Fast** - Smooth animations and instant loading
 
 ## Installation
 
 ### For Development
 
-1. Clone this repository
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Build the extension:
-   ```bash
-   npm run build
-   ```
-
-4. Load in Chrome:
+   Load in Chrome:
    - Open `chrome://extensions/`
    - Enable "Developer mode"
    - Click "Load unpacked"
@@ -94,45 +47,9 @@ public/
 
 The extension will be available on the Chrome Web Store soon.
 
-## Development
+## Technology
 
-### Commands
-
-```bash
-# Install dependencies
-npm install
-
-# Build for production
-npm run build
-
-# Development mode (watch mode)
-npm run dev
-```
-
-### Debugging
-
-- **Content Script**: Open DevTools on any webpage, check Console for "Stolen title" logs
-- **Popup**: Right-click extension icon → "Inspect popup"
-- **Background Worker**: Go to `chrome://extensions/` → Click "Service Worker"
-- **Full Page**: Open the stolen-titles page and use DevTools normally
-
-## Data Structure
-
-All data is stored in `chrome.storage.local` under the key `stolen_titles`:
-
-```typescript
-{
-  "2025-10-01": [
-    {
-      "title": "Example Page Title",
-      "url": "https://example.com",
-      "time": "14:30",
-      "favicon": "https://example.com/favicon.ico"
-    }
-  ],
-  "2025-09-30": [ ... ]
-}
-```
+Built with React, TypeScript, TailwindCSS, and Framer Motion.
 
 ## Privacy
 
@@ -155,8 +72,8 @@ ISC
 
 ## Credits
 
-Inspired by [Button Stealer](https://github.com/anatolyzenkov/button-stealer) by Anatoly Zenkov.
+- Inspired by [Button Stealer](https://github.com/anatolyzenkov/button-stealer) by Anatoly Zenkov
+- Built with fonts from [Google Fonts](https://fonts.google.com/) (Poppins)
+- Background images from [Unsplash](https://unsplash.com/)
 
-## Contributing
 
-Contributions are welcome. Please open an issue first to discuss what you would like to change.

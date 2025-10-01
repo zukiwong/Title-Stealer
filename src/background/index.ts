@@ -1,6 +1,6 @@
 // Background Service Worker
 chrome.runtime.onInstalled.addListener(() => {
-  console.log('🎯 Stolen Titles extension installed!');
+  // Extension installed
 });
 
 // 未来可以添加：

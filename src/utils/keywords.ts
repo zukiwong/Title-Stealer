@@ -34,7 +34,7 @@ export interface WordFrequency {
 }
 
 // 从标题中提取关键词
-export const extractKeywords = (titles: string[]): WordFrequency[] => {
+export const extractKeywords = (titles: string[], customIgnoredKeywords: string[] = []): WordFrequency[] => {
   // 合并所有标题
   const allText = titles.join(' ');
 
@@ -56,6 +56,7 @@ export const extractKeywords = (titles: string[]): WordFrequency[] => {
     .filter((word: string) =>
       word.length > 2 && // 至少3个字符
       !additionalStopwords.includes(word) &&
+      !customIgnoredKeywords.includes(word) && // 自定义屏蔽词
       !/^\d+$/.test(word) // 排除纯数字
     );
 
@@ -63,7 +64,8 @@ export const extractKeywords = (titles: string[]): WordFrequency[] => {
   const filteredChinese = chineseWords
     .filter(word =>
       word.length > 1 && // 至少2个汉字
-      !chineseStopwords.includes(word)
+      !chineseStopwords.includes(word) &&
+      !customIgnoredKeywords.includes(word) // 自定义屏蔽词
     );
 
   // 合并并计算词频
