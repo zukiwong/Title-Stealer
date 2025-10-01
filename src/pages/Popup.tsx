@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Menu, ArrowLeft } from 'lucide-react';
-import { getAllRecords, getIgnoredKeywords, saveIgnoredKeywords, clearAllRecords } from '../utils/storage';
+import { getAllRecords, getIgnoredKeywords, saveIgnoredKeywords, clearAllRecords, getBackgroundImage, saveBackgroundImage } from '../utils/storage';
+import { ImageUploader } from '../components/ImageUploader';
 
 const popupWords = [
   'STEAL', 'COLLECT', 'CAPTURE', 'HARVEST', 'GATHER', 'SAVE', 'STORE',
@@ -99,7 +100,7 @@ export const Popup = () => {
       {currentPage === 'main' ? (
         <MainPage wordCount={wordCount} onViewCollection={handleViewCollection} />
       ) : (
-        <SettingsPage wordCount={wordCount} />
+        <SettingsPage />
       )}
 
       {/* 底部渐变叠加层 */}
@@ -215,18 +216,25 @@ function MainPage({ wordCount, onViewCollection }: { wordCount: number; onViewCo
   );
 }
 
-function SettingsPage({ wordCount }: { wordCount: number }) {
+function SettingsPage() {
   const [ignoredKeywords, setIgnoredKeywords] = useState<string[]>([]);
   const [newKeyword, setNewKeyword] = useState('');
+  const [backgroundImage, setBackgroundImage] = useState<string | null>(null);
 
-  // 加载屏蔽词列表
+  // 加载屏蔽词列表和背景图
   useEffect(() => {
     loadIgnoredKeywords();
+    loadBackgroundImage();
   }, []);
 
   const loadIgnoredKeywords = async () => {
     const keywords = await getIgnoredKeywords();
     setIgnoredKeywords(keywords);
+  };
+
+  const loadBackgroundImage = async () => {
+    const image = await getBackgroundImage();
+    setBackgroundImage(image);
   };
 
   const handleAddKeyword = async () => {
@@ -252,13 +260,19 @@ function SettingsPage({ wordCount }: { wordCount: number }) {
     }
   };
 
+  const handleImageChange = async (base64Image: string | null) => {
+    setBackgroundImage(base64Image);
+    await saveBackgroundImage(base64Image);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -20 }}
       transition={{ duration: 0.3 }}
-      className="relative z-10 px-6 py-4 flex flex-col h-full overflow-y-auto"
+      className="relative z-10 px-6 pt-4 pb-8 overflow-y-auto"
+      style={{ height: 'calc(600px - 64px)' }}
     >
       {/* 标题 */}
       <motion.div
@@ -272,6 +286,12 @@ function SettingsPage({ wordCount }: { wordCount: number }) {
           Manage your word collection
         </p>
       </motion.div>
+
+      {/* 背景图上传 */}
+      <ImageUploader
+        onImageChange={handleImageChange}
+        currentImage={backgroundImage}
+      />
 
       {/* 忽略关键词 */}
       <motion.div
@@ -327,13 +347,14 @@ function SettingsPage({ wordCount }: { wordCount: number }) {
       </motion.div>
 
       {/* 分隔线 */}
-      <div className="border-t border-white/20 my-6" />
+      <div className="border-t border-white/20 my-4" />
 
       {/* 删除按钮 */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.3 }}
+        className="mb-4"
       >
         <button
           onClick={handleClearAllWords}
@@ -342,19 +363,6 @@ function SettingsPage({ wordCount }: { wordCount: number }) {
         >
           Remove All Words
         </button>
-      </motion.div>
-
-      {/* 底部统计 */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.4 }}
-        className="pt-4 border-t border-white/20 mt-auto"
-      >
-        <div className="flex justify-between text-sm text-white/60" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: '300' }}>
-          <span>Total ignored: {ignoredKeywords.length}</span>
-          <span>Collection: {wordCount} words</span>
-        </div>
       </motion.div>
     </motion.div>
   );

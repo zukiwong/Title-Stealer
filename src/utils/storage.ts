@@ -75,3 +75,21 @@ export const saveIgnoredKeywords = async (keywords: string[]): Promise<void> => 
 export const clearAllRecords = async (): Promise<void> => {
   await chrome.storage.local.set({ [STORAGE_KEY]: {} });
 };
+
+// 背景图相关
+const BACKGROUND_IMAGE_KEY = 'background_image';
+
+// 获取自定义背景图
+export const getBackgroundImage = async (): Promise<string | null> => {
+  const data = await chrome.storage.local.get([BACKGROUND_IMAGE_KEY]);
+  return data[BACKGROUND_IMAGE_KEY] || null;
+};
+
+// 保存自定义背景图
+export const saveBackgroundImage = async (base64Image: string | null): Promise<void> => {
+  if (base64Image) {
+    await chrome.storage.local.set({ [BACKGROUND_IMAGE_KEY]: base64Image });
+  } else {
+    await chrome.storage.local.remove(BACKGROUND_IMAGE_KEY);
+  }
+};

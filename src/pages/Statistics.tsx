@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { getAllRecords, getIgnoredKeywords } from '../utils/storage';
+import { getAllRecords, getIgnoredKeywords, getBackgroundImage } from '../utils/storage';
 import { extractKeywords, getTitlesByDateRange, WordFrequency } from '../utils/keywords';
 import { FloatingWord } from '../components/FloatingWord';
 import { BlurredOverlay } from '../components/BlurredOverlay';
@@ -13,6 +13,7 @@ export const Statistics = () => {
   const [timeRange, setTimeRange] = useState<'today' | 'week' | 'month' | 'all'>('all');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [ignoredKeywords, setIgnoredKeywords] = useState<string[]>([]);
+  const [backgroundImage, setBackgroundImage] = useState<string | null>(null);
 
   useEffect(() => {
     loadData();
@@ -36,8 +37,10 @@ export const Statistics = () => {
     try {
       const allRecords = await getAllRecords();
       const keywords = await getIgnoredKeywords();
+      const bgImage = await getBackgroundImage();
       setRecords(allRecords);
       setIgnoredKeywords(keywords);
+      setBackgroundImage(bgImage);
     } catch (error) {
       // Silent error
     } finally {
@@ -87,12 +90,16 @@ export const Statistics = () => {
   const minValue = keywords.length > 0 ? Math.min(...keywords.map(w => w.value)) : 1;
   const topWord = keywords.length > 0 ? keywords[0].text.toUpperCase() : 'BROWSE';
 
+  // 默认背景图
+  const defaultBackgroundImage = "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920&q=80";
+  const displayBackgroundImage = backgroundImage || defaultBackgroundImage;
+
   return (
     <div className="relative w-full h-screen overflow-hidden bg-black">
       {/* 背景图片 */}
       <div className="absolute inset-0">
         <img
-          src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920&q=80"
+          src={displayBackgroundImage}
           alt="Background"
           className="w-full h-full object-cover opacity-40"
         />
