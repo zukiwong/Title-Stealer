@@ -8,9 +8,7 @@ Inspired by [Button Stealer](https://chromewebstore.google.com/detail/button-ste
 
 ## Screenshots
 
-![Popup Interface](screenshots/popup.png)
 ![Statistics Page](screenshots/statistics.png)
-![Settings Page](screenshots/settings.png)
 
 ## Features
 
