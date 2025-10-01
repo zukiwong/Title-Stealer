@@ -1,30 +1,25 @@
 # Title Stealer
 
-A minimalist Chrome extension that transforms your browsing history into beautiful word clouds.
+I steal your titles and turn them into something meaningful. Or not.
 
-## Overview
+A Chrome extension that captures website names as you browse and visualizes them as floating text art.
 
-Title Stealer automatically collects webpage titles as you browse, extracting keywords to create stunning immersive visualizations. Inspired by [Button Stealer](https://chromewebstore.google.com/detail/button-stealer/iiikidmnimlpahbeknmkeonmemajpccj), but focused on text and visual artistry.
+Inspired by [Button Stealer](https://chromewebstore.google.com/detail/button-stealer/iiikidmnimlpahbeknmkeonmemajpccj). Everything stays local in your browser.
 
-All data is stored locally in your browser. Nothing is uploaded to any server.
+## Screenshots
+
+![Popup Interface](screenshots/popup.png)
+![Statistics Page](screenshots/statistics.png)
+![Settings Page](screenshots/settings.png)
 
 ## Features
 
-- **Automatic Collection** - Captures page titles, URLs, and timestamps from every website you visit
-- **Immersive Word Cloud** - Full-screen black background with floating white words
-  - Keywords sized by frequency
-  - Smooth floating animations
-  - Background image with artistic text fill
-  - Time-based filtering (today, week, month, all time)
-- **Beautiful Popup** - Dark themed with floating word effects
-  - Quick access to your collection
-  - Settings page for keyword management
-  - Word count statistics
-- **Keyword Extraction** - Intelligent keyword extraction supporting both English and Chinese
-  - Automatic stopword filtering
-  - Frequency analysis
-  - Customizable ignored keywords
-- **Privacy-First** - All data stored locally, nothing sent to servers
+- Automatically captures website names as you browse
+- Visualizes your browsing patterns with floating text animations
+- Filter by time range (today, week, month, all time)
+- Upload custom background and text images
+- Block specific websites from tracking
+- All data stored locally in your browser
 
 ## Design Philosophy
 
@@ -35,17 +30,7 @@ All data is stored locally in your browser. Nothing is uploaded to any server.
 
 ## Installation
 
-### For Development
-
-   Load in Chrome:
-   - Open `chrome://extensions/`
-   - Enable "Developer mode"
-   - Click "Load unpacked"
-   - Select the `dist/` directory
-
-### For Users
-
-The extension will be available on the Chrome Web Store soon.
+Search for "Title Stealer" in the [Chrome Web Store](https://chromewebstore.google.com/).
 
 ## Technology
 
@@ -65,10 +50,6 @@ The extension requires:
 - `storage` - To save collected titles locally
 - `tabs` - To access page information
 - `<all_urls>` - To run on all websites and collect titles
-
-## License
-
-ISC
 
 ## Credits
 

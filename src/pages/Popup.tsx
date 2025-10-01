@@ -204,10 +204,10 @@ function MainPage({ onViewCollection }: { onViewCollection: () => void }) {
             href="https://buymeacoffee.com/zukiwong"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-white/40 hover:text-white/60 text-xs transition-colors"
+            className="text-white/40 hover:text-white/60 text-xs transition-colors underline"
             style={{ fontFamily: 'Poppins, sans-serif', fontWeight: '300' }}
           >
-            buymeacoffee
+            buy me a coffee
           </a>
         </motion.div>
       </div>
