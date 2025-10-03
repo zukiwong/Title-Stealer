@@ -71,9 +71,9 @@ function extractSiteName(url: string): string {
 
   // 再匹配主域名（处理子域名情况）
   // 例如：space.bilibili.com -> bilibili.com
-  const parts = hostname.split('.');
-  if (parts.length >= 2) {
-    const mainDomain = parts.slice(-2).join('.'); // 取最后两部分
+  const domainParts = hostname.split('.');
+  if (domainParts.length >= 2) {
+    const mainDomain = domainParts.slice(-2).join('.'); // 取最后两部分
     if (siteMap[mainDomain]) {
       return siteMap[mainDomain];
     }
