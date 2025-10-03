@@ -64,8 +64,24 @@ function extractSiteName(url: string): string {
   };
 
   // 检查是否在映射表中
+  // 优先精确匹配完整域名
+  if (siteMap[hostname]) {
+    return siteMap[hostname];
+  }
+
+  // 再匹配主域名（处理子域名情况）
+  // 例如：space.bilibili.com -> bilibili.com
+  const parts = hostname.split('.');
+  if (parts.length >= 2) {
+    const mainDomain = parts.slice(-2).join('.'); // 取最后两部分
+    if (siteMap[mainDomain]) {
+      return siteMap[mainDomain];
+    }
+  }
+
+  // 最后检查是否有任何域名匹配
   for (const [domain, siteName] of Object.entries(siteMap)) {
-    if (hostname === domain || hostname.endsWith('.' + domain)) {
+    if (hostname.endsWith('.' + domain)) {
       return siteName;
     }
   }
