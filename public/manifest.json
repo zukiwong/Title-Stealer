@@ -3,7 +3,7 @@
   "name": "Title Stealer",
   "version": "1.0.0",
   "description": "Automatically collect and organize titles from every webpage you visit",
-  "permissions": ["storage", "tabs"],
+  "permissions": ["storage"],
   "host_permissions": ["<all_urls>"],
   "action": {
     "default_popup": "popup.html",

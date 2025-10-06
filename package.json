@@ -8,7 +8,7 @@
     "build": "tsc && vite build && vite build --config vite.config.content.ts && vite build --config vite.config.background.ts && npm run copy-files",
     "copy-files": "cp public/manifest.json dist/ && cp public/*.png dist/",
     "preview": "vite preview",
-    "package": "npm run build && cd dist && zip -r ../stolen-titles-v1.0.0.zip . && cd .. && echo 'Package created: stolen-titles-v1.0.0.zip'"
+    "package": "npm run build && cd dist && zip -r ../title-stealer-v1.0.0.zip . && cd .. && echo 'Package created: title-stealer-v1.0.0.zip'"
   },
   "repository": {
     "type": "git",
