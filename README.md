@@ -28,7 +28,7 @@ Inspired by [Button Stealer](https://chromewebstore.google.com/detail/button-ste
 
 ## Installation
 
-Search for "Title Stealer" in the [Chrome Web Store](https://chromewebstore.google.com/). **Coming Soon!** 
+Search for "Title Stealer" in the [Chrome Web Store](https://chromewebstore.google.com/detail/title-stealer/ihcfgpeojochpkncecmaifpdmobcclmi). 
 Currently under review...
 
 ## Technology
