@@ -1,6 +1,7 @@
 # Title Stealer
 
-I steal your titles and turn them into something meaningful. Or not. https://chromewebstore.google.com/detail/ihcfgpeojochpkncecmaifpdmobcclmi?utm_source=item-share-cb
+I steal your titles and turn them into something meaningful. Or not. 
+[Chrome Web Store](https://chromewebstore.google.com/detail/title-stealer/ihcfgpeojochpkncecmaifpdmobcclmi). 
 
 A Chrome extension that captures website names as you browse and visualizes them as floating text art.
 
